@@ -14,7 +14,16 @@
 # limitations under the License.
 ##
 
-FROM swift3-base:latest
-
-# add libdispatch binaries generated from Dockerfile-libdispatch
-ADD libdispatch.tar.gz /
+# build the base image for both libdispatch and swift3-base
+docker build --tag swift3-base --file Dockerfile-base .
+# build the libdispatch image based on swift3-base
+docker build --tag swift3-libdispatch --file Dockerfile-libdispatch .
+# run and copy the tar.gz file from the root to the host
+docker run --name libdispatch swift3-libdispatch
+docker cp libdispatch:/libdispatch.tar.gz .
+# build the final swift3 image
+docker build --tag swift3 .
+# cleanup
+rm libdispatch.tar.gz
+docker stop libdispatch
+docker rm libdispatch

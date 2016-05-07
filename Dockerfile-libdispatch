@@ -1,0 +1,17 @@
+FROM swift3-base:latest
+
+# Install Dependencies that the libdispatch build requires
+RUN apt-get install -y libbsd-dev libglib2.0-dev automake libtool
+
+# Clone and install swift-corelibs-libdispatch
+RUN git clone -b experimental/foundation https://github.com/apple/swift-corelibs-libdispatch.git && \
+  cd swift-corelibs-libdispatch && git submodule init && \
+  git submodule update && sh ./autogen.sh && \
+  ./configure --with-swift-toolchain=/usr --prefix=/usr && \
+  make
+
+# Leave this as a seperate RUN command so we can inspect the changes make with 'docker diff'
+RUN cd swift-corelibs-libdispatch && make install
+
+# Compress the libdispatch binaries
+RUN tar -cvzf /libdispatch.tar.gz /usr/lib/swift/linux/x86_64/Dispatch.* /usr/lib/swift/linux/libdispatch.* /usr/lib/swift/dispatch /usr/lib/swift/os
