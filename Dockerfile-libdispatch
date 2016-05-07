@@ -10,7 +10,7 @@ RUN git clone -b experimental/foundation https://github.com/apple/swift-corelibs
   ./configure --with-swift-toolchain=/usr --prefix=/usr && \
   make
 
-# Leave this as a seperate RUN command so we can inspect the changes make with 'docker diff'
+# Leave this as a separate RUN command so we can inspect the changes make with 'docker diff'
 RUN cd swift-corelibs-libdispatch && make install
 
 # Compress the libdispatch binaries

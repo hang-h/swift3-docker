@@ -18,7 +18,7 @@ Run the following in Terminal:
 
     ./build.sh
 
-# Binary Comparison
+# Image sizes
     swift3               1.296 GB
     ibmcom/swift-ubuntu  1.765 GB
 
@@ -48,10 +48,6 @@ The following files are created by the libdispatch Makefile:
     /usr/lib/swift/linux/x86_64/Dispatch.swiftmodule
     /usr/lib/swift/os/linux_base.h
     /usr/lib/swift/os/object.h
-
-# Image sizes
-    swift3               1.297 GB
-    ibmcom/swift-ubuntu  1.765 GB
 
 
 # Docker History
