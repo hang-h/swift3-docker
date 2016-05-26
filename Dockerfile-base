@@ -20,19 +20,25 @@ FROM ubuntu:15.10
 ENV SWIFT_VERSION swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a
 ENV SWIFT_PLATFORM ubuntu15.10
 
-# Install Dependencies
-RUN apt-get update && \
-  apt-get install -y \
-  clang libicu55 libpython2.7 libxml2 libkqueue-dev libblocksruntime-dev \
-  libcurl4-openssl-dev curl wget git && \
-  apt-get clean
+# Linux OS dependencies
+RUN apt-get update && apt-get install -y \
+  clang \
+  curl \
+  git \
+  libblocksruntime-dev \
+  libicu-dev \
+  libpython2.7 \
+  libkqueue-dev \
+  wget \
+  && rm -rf /var/lib/apt/lists/*
+
 
 # Download and install Swift
 # mv /usr/lib/lldb below from:
 # https://lists.swift.org/pipermail/swift-dev/Week-of-Mon-20160425/001838.html
-RUN SWIFT_ARCHIVE_NAME=$SWIFT_VERSION-$SWIFT_PLATFORM && \
-  SWIFT_URL=https://swift.org/builds/development/$(echo "$SWIFT_PLATFORM" | tr -d .)/$SWIFT_VERSION/$SWIFT_ARCHIVE_NAME.tar.gz && \
-  wget -nv $SWIFT_URL && \
-  tar -xvzf $SWIFT_ARCHIVE_NAME.tar.gz -C / --strip 1 && \
-  mv /usr/lib/lldb /usr/lib/lldb-disabled && \
-  rm -rf $SWIFT_ARCHIVE_NAME* /tmp/* /var/tmp/*
+RUN SWIFT_ARCHIVE_NAME=$SWIFT_VERSION-$SWIFT_PLATFORM \
+  $$ SWIFT_URL=https://swift.org/builds/development/$(echo "$SWIFT_PLATFORM" | tr -d .)/$SWIFT_VERSION/$SWIFT_ARCHIVE_NAME.tar.gz \
+  && wget -nv $SWIFT_URL \
+  && tar -xvzf $SWIFT_ARCHIVE_NAME.tar.gz -C / --strip 1 \
+  && mv /usr/lib/lldb /usr/lib/lldb-disabled \
+  && rm -rf $SWIFT_ARCHIVE_NAME* /tmp/* /var/tmp/*

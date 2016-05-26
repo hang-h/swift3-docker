@@ -21,8 +21,8 @@ docker build --tag swift3-libdispatch --file Dockerfile-libdispatch .
 # run and copy the tar.gz file from the root to the host
 docker run --name libdispatch swift3-libdispatch
 docker cp libdispatch:/libdispatch.tar.gz .
-# build the final swift3 image
-docker build --tag swift3 .
+# build the final swift3-slim image
+docker build --tag swift3-slim .
 # cleanup
 rm libdispatch.tar.gz
 docker stop libdispatch

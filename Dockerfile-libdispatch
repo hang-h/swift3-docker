@@ -1,14 +1,38 @@
+##
+# Copyright IBM Corporation 2016
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+##
+
 FROM swift3-base:latest
 
 # Install Dependencies that the libdispatch build requires
-RUN apt-get install -y libbsd-dev libglib2.0-dev automake libtool
+RUN apt-get update && apt-get install -y \
+  automake \
+  build-essential \
+  libbsd-dev \
+  libglib2.0-dev \
+  libtool
+
 
 # Clone and install swift-corelibs-libdispatch
-RUN git clone -b experimental/foundation https://github.com/apple/swift-corelibs-libdispatch.git && \
-  cd swift-corelibs-libdispatch && git submodule init && \
-  git submodule update && sh ./autogen.sh && \
-  ./configure --with-swift-toolchain=/usr --prefix=/usr && \
-  make
+RUN git clone -b experimental/foundation https://github.com/apple/swift-corelibs-libdispatch.git \
+  && cd swift-corelibs-libdispatch \
+  && git submodule init \
+  && git submodule update \
+  && sh ./autogen.sh \
+  && ./configure --with-swift-toolchain=/usr --prefix=/usr \
+  && make
 
 # Leave this as a separate RUN command so we can inspect the changes make with 'docker diff'
 RUN cd swift-corelibs-libdispatch && make install
