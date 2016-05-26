@@ -18,7 +18,7 @@ Run the following in Terminal:
     ./build.sh
 
 # Image sizes
-    swift3-slim          1.296 GB
+    swift3-slim          1.397 GB
     ibmcom/swift-ubuntu  1.508 GB
 
 
